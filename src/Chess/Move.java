@@ -9,5 +9,4 @@ public class Move{
         this. y = y;
         this.isRepeatable = isRepeatable;
     }
-
 }
