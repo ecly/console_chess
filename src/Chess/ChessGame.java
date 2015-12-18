@@ -1,5 +1,6 @@
 package Chess;
 
+import Chess.Pieces.Tuple;
 import Console.BoardDisplay;
 
 public class ChessGame {
@@ -12,17 +13,34 @@ public class ChessGame {
         board = new ChessBoard();
         display = new BoardDisplay();
         isFinished = false;
+
+        display.clearConsole();
+        display.printBoard(board);
     }
 
-    public ChessBoard getBoard(){
-        return board;
+    public void playMove(Tuple from, Tuple to){
+        if(isValidMove(from, to)) {
+            display.clearConsole();
+            Tile fromTile = board.getBoardArray()[from.Y()][from.X()];
+            ChessPiece pieceToMove = fromTile.getPiece();
+
+            Tile toTile = board.getBoardArray()[to.Y()][to.X()];
+            toTile.setPiece(pieceToMove);
+
+            fromTile.empty();
+            display.printBoard(board);
+        }
+    }
+
+    public boolean isValidMove(Tuple from, Tuple to){
+        return true;
     }
 
     public void printBoard(){
         display.printBoard(board);
     }
 
-    private boolean isFinished(){
+    public boolean isFinished(){
         return isFinished;
     }
 }
