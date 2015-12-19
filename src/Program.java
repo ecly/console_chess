@@ -11,7 +11,7 @@ public class Program {
         Scanner scanner = new Scanner(System.in);
         ChessGame game = new ChessGame();
         while (!game.isFinished()){
-            System.out.println("Enter move(eg. A2-A3):");
+            System.out.println("Enter move (eg. A2-A3):");
             String input = scanner.nextLine().trim();
 
             if(!handler.isValid(input)){
