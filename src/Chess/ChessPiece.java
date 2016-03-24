@@ -6,11 +6,13 @@ public abstract class ChessPiece {
     private Move[] moves;
     private String name;
     private char charValue;
+    private boolean repeatableMoves;
 
-    public ChessPiece(PieceType type, PieceColor color, Move[] moves){
+    public ChessPiece(PieceType type, PieceColor color, Move[] moves, boolean repeatableMoves){
         this.type = type;
         this.color = color;
         this.moves = moves;
+        this.repeatableMoves = repeatableMoves;
         name = type.name();
         charValue = type.name().trim().charAt(0);
     }
@@ -24,8 +26,12 @@ public abstract class ChessPiece {
     }
     public Move[] moves(){ return moves; }
 
-    public String name() { return name; }
+    public String name(){ return name; }
 
-    public char charValue() { return charValue; }
+    public PieceColor color(){ return color; }
+
+    public char charValue(){ return charValue; }
+
+    public boolean repeatableMoves(){ return repeatableMoves; }
 
 }

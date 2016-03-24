@@ -24,7 +24,14 @@ public class ChessBoard {
         }
     }
 
-    public void fillBoard(){
+    public Tile getTileFromTuple(Tuple tuple){
+        return board[tuple.X()][tuple.Y()];
+    }
+
+    /*
+    Initial filler of board
+     */
+    private void fillBoard(){
         //pawns
         for(int i = 0; i < 8; i++){
         board[1][i].setPiece(new Pawn(ChessPiece.PieceColor.Black));

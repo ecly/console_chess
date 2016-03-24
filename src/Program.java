@@ -25,9 +25,7 @@ public class Program {
                 if (game.isValidMove(from, to)) {
                     game.playMove(from, to);
                 } else {
-                    System.out.println("Invalid move!");
-                    System.out.println("Please read a cheese book for rules.");
-                    System.out.println("If you believe the move to be valid nonetheless, it's still not.");
+                    System.out.println("Please read a chess book for rules.");
                 }
             }
         }
