@@ -25,7 +25,7 @@ public class ChessBoard {
     }
 
     public Tile getTileFromTuple(Tuple tuple){
-        return board[tuple.X()][tuple.Y()];
+        return board[tuple.Y()][tuple.X()];
     }
 
     /*

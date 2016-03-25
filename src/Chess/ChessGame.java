@@ -33,7 +33,8 @@ public class ChessGame {
             fromTile.empty();
             endTurn();
             display.printBoard(board);
-        }
+        } else
+            System.out.println("Invalid move!");
     }
 
     private void endTurn(){
@@ -45,17 +46,13 @@ public class ChessGame {
         ChessPiece fromPiece = board.getTileFromTuple(from).getPiece();
         ChessPiece toPiece = board.getTileFromTuple(to).getPiece();
 
-
-        //Debug
-        System.out.println("Current player:" + currentPlayer + ", PieceColor: " + fromPiece.color());
-
         if (fromPiece == null){
             System.out.println("From tile is empty!");
             return false;
         } else if (fromPiece.color() != currentPlayer) {
             System.out.println("Not your piece!");
             return false;
-        } else if (toPiece.color() != currentPlayer) {
+        } else if (toPiece != null && toPiece.color() != currentPlayer) {//null pointer if null not evaluated first
             System.out.println("Can't take own piece!");
             return false;
         }
@@ -87,6 +84,7 @@ public class ChessGame {
                 }
             }
         }
+        if(!validMove) System.out.println("Illegal move for piece!");
         return validMove;
     }
 

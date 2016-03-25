@@ -22,11 +22,8 @@ public class Program {
                 Tuple from = handler.getFrom(input);
                 Tuple to = handler.getTo(input);
 
-                if (game.isValidMove(from, to)) {
+                if (game.isValidMove(from, to))
                     game.playMove(from, to);
-                } else {
-                    System.out.println("Please read a chess book for rules.");
-                }
             }
         }
         System.out.println("Game has finished. Thanks for playing.");
