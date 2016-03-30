@@ -11,6 +11,7 @@ public class BoardDisplay {
     }
 
     public static void printBoard(ChessBoard board){
+        clearConsole();
         Tile[][] b = board.getBoardArray();
 
         System.out.println("      [A][B][C][D][E][F][G][H] \n");
@@ -18,11 +19,7 @@ public class BoardDisplay {
             System.out.print("[" + (8 - i) + "]   ");
 
             for (int j = 0; j < 8; j++){
-                //System.out.print(b[i][j].value());
-                if(!b[i][j].value().equals("[ ]"))
-                    System.out.print("["+ b[i][j].getPiece().color().toString().charAt(0)+"]");
-                else
-                    System.out.print(b[i][j].value());
+                System.out.print(b[i][j].value());
             }
 
             System.out.println("   [" + (8 - i) + "]");
@@ -31,7 +28,10 @@ public class BoardDisplay {
         System.out.println("\n      [A][B][C][D][E][F][G][H]\n");
     }
 
-    public void clearConsole(){
+    /**
+     * Universal console clear for both Windows and Unix machines.
+     */
+    public static void clearConsole(){
         try
         {
             final String os = System.getProperty("os.name");

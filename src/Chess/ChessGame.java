@@ -23,7 +23,6 @@ public class ChessGame {
 
     public void playMove(Tuple from, Tuple to){
         if(isValidMove(from, to)) {
-            display.clearConsole();
             Tile fromTile = board.getBoardArray()[from.Y()][from.X()];
             ChessPiece pieceToMove = fromTile.getPiece();
 
