@@ -51,7 +51,7 @@ public class ChessGame {
         } else if (fromPiece.color() != currentPlayer) {
             System.out.println("Not your piece!");
             return false;
-        } else if (toPiece != null && toPiece.color() != currentPlayer) {//null pointer if null not evaluated first
+        } else if (toPiece != null && toPiece.color() == currentPlayer) {//null pointer if null not evaluated first
             System.out.println("Can't take own piece!");
             return false;
         }
