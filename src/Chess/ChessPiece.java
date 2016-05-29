@@ -8,7 +8,7 @@ public abstract class ChessPiece {
     private char charValue;
     private boolean repeatableMoves;
 
-    public ChessPiece(PieceType type, PieceColor color, Move[] moves, boolean repeatableMoves){
+    protected ChessPiece(PieceType type, PieceColor color, Move[] moves, boolean repeatableMoves){
         this.type = type;
         this.color = color;
         this.moves = moves;
@@ -17,12 +17,12 @@ public abstract class ChessPiece {
         charValue = type.name().trim().charAt(0);
     }
 
-    public enum PieceType{
-        Pawn, Rook, Knight, Bishop, Queen, King;
+    public enum PieceType {
+        Pawn, Rook, Knight, Bishop, Queen, King
     }
 
     public enum PieceColor {
-        White, Black;
+        White, Black
     }
     public Move[] moves(){ return moves; }
 

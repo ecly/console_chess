@@ -1,6 +1,6 @@
 package Console;
 
-public class BoardMapper {
+class BoardMapper {
 
     public BoardMapper(){
 

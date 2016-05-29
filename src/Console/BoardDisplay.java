@@ -5,10 +5,7 @@ import Chess.Tile;
 
 public class BoardDisplay {
 
-
-    public BoardDisplay(){
-
-    }
+    public BoardDisplay(){}
 
     public static void printBoard(ChessBoard board){
         clearConsole();

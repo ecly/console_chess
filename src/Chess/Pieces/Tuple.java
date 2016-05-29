@@ -4,7 +4,8 @@ package Chess.Pieces;
  * Used to store an int/int pair to map to tiles on the chessboard.
  */
 public class Tuple {
-    public int x, y;
+    private int x;
+    private int y;
 
     public Tuple(int x, int y){
             this.x = x;

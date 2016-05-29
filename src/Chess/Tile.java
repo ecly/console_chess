@@ -3,11 +3,11 @@ package Chess;
 
 public class Tile {
 
-    public ChessPiece piece;
-    public TileColor color;
+    private ChessPiece piece;
+    private TileColor color;
 
     public enum TileColor{
-        White, Black;
+        White, Black
     }
 
     public Tile(TileColor color){

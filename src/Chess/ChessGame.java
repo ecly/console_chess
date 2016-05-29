@@ -7,18 +7,16 @@ import Console.BoardDisplay;
 public class ChessGame {
 
     private ChessBoard board;
-    private BoardDisplay display;
     private boolean isFinished;
     private PieceColor currentPlayer;
 
     public ChessGame(){
         board = new ChessBoard();
-        display = new BoardDisplay();
         currentPlayer = PieceColor.White;
         isFinished = false;
 
-        display.clearConsole();
-        display.printBoard(board);
+        BoardDisplay.clearConsole();
+        BoardDisplay.printBoard(board);
     }
 
     public void playMove(Tuple from, Tuple to){
@@ -31,7 +29,7 @@ public class ChessGame {
 
             fromTile.empty();
             endTurn();
-            display.printBoard(board);
+            BoardDisplay.printBoard(board);
         } else
             System.out.println("Invalid move!");
     }
@@ -85,10 +83,6 @@ public class ChessGame {
         }
         if(!validMove) System.out.println("Illegal move for piece!");
         return validMove;
-    }
-
-    public void printBoard(){
-        display.printBoard(board);
     }
 
     public boolean isFinished(){
