@@ -1,4 +1,4 @@
-package Chess.Pieces;
+package Chess;
 
 /**
  * Used to store an int/int pair to map to tiles on the chessboard.

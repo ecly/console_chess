@@ -35,6 +35,10 @@ public class Tile {
         }
     }
 
+    public boolean isEmpty(){
+        return piece == null;
+    }
+
     public void empty(){
         piece = null;
     }

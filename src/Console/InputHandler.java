@@ -1,6 +1,6 @@
 package Console;
 
-import Chess.Pieces.Tuple;
+import Chess.Tuple;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

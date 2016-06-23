@@ -1,5 +1,5 @@
 import Chess.ChessGame;
-import Chess.Pieces.Tuple;
+import Chess.Tuple;
 import Console.InputHandler;
 
 import java.util.Scanner;

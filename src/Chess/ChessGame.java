@@ -1,6 +1,5 @@
 package Chess;
 
-import Chess.Pieces.Tuple;
 import Chess.ChessPiece.PieceColor;
 import Console.BoardDisplay;
 
@@ -67,8 +66,18 @@ public class ChessGame {
         if(!repeatableMoves){
             for (Move move : validMoves) {
                 if (move.x == xMove && move.y == yMove) {
-                    validMove = true;
-                    break;
+                    if (move.onTakeOnly){//if move is only legal on take (pawns)
+                        Tile toTile = board.getTileFromTuple(to);
+                        if (toTile.isEmpty()) break;
+
+                        ChessPiece toPiece = toTile.getPiece();
+                        ChessPiece fromPiece = board.getTileFromTuple(from).getPiece();
+                        validMove = fromPiece.color() != toPiece.color();//if different color, valid move
+                        break;
+                    } else {
+                        validMove = true;
+                        break;
+                    }
                 }
             }
         } else {
