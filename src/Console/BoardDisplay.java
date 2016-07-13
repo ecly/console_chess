@@ -5,8 +5,6 @@ import Chess.Tile;
 
 public class BoardDisplay {
 
-    public BoardDisplay(){}
-
     public static void printBoard(ChessBoard board){
         clearConsole();
         Tile[][] b = board.getBoardArray();
@@ -43,6 +41,8 @@ public class BoardDisplay {
                 Runtime.getRuntime().exec("clear");
             }
         }
-        catch (final Exception e){}
+        catch (final Exception e){
+            System.out.println("Error while trying to clear console");
+        }
     }
 }

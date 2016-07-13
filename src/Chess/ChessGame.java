@@ -58,7 +58,8 @@ public class ChessGame {
 
     private boolean isPossibleMoveForPiece(Tuple from, Tuple to){
         Move[] validMoves = board.getTileFromTuple(from).getPiece().moves();
-        boolean repeatableMoves = board.getTileFromTuple(from).getPiece().repeatableMoves();
+        ChessPiece fromPiece = board.getTileFromTuple(from).getPiece();
+        boolean repeatableMoves = fromPiece.repeatableMoves();
         int xMove = from.X() - to.X();
         int yMove = from.Y() - to.Y();
 
@@ -71,8 +72,10 @@ public class ChessGame {
                         if (toTile.isEmpty()) break;
 
                         ChessPiece toPiece = toTile.getPiece();
-                        ChessPiece fromPiece = board.getTileFromTuple(from).getPiece();
                         validMove = fromPiece.color() != toPiece.color();//if different color, valid move
+                        break;
+                    //handling first move only for pawns
+                    } else if (move.firstMoveOnly && (fromPiece.color() == PieceColor.White && from.Y() != 6 || fromPiece.color() == PieceColor.Black && from.Y() != 1)) {
                         break;
                     } else {
                         validMove = true;
