@@ -56,12 +56,19 @@ public class ChessGame {
         return isPossibleMoveForPiece(from, to);
     }
 
+    //TODO split in two
     private boolean isPossibleMoveForPiece(Tuple from, Tuple to){
         Move[] validMoves = board.getTileFromTuple(from).getPiece().moves();
         ChessPiece fromPiece = board.getTileFromTuple(from).getPiece();
         boolean repeatableMoves = fromPiece.repeatableMoves();
         int xMove = from.X() - to.X();
         int yMove = from.Y() - to.Y();
+
+        //Reverse values for black, such that lowering y-values are treated as moving forward
+        //this is only relevant in the case of pawns, but added for abstract movement assignment for pieces.
+        if (currentPlayer == PieceColor.Black) {
+            yMove = -yMove;
+        }
 
         boolean validMove = false;
         if(!repeatableMoves){

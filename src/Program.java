@@ -18,7 +18,6 @@ public class Program {
                 System.out.println("Invalid input!");
                 System.out.println("Valid input is in form: A2-A3");
             } else {
-
                 Tuple from = handler.getFrom(input);
                 Tuple to = handler.getTo(input);
 

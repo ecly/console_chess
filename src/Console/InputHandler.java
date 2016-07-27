@@ -7,7 +7,7 @@ import java.util.regex.Pattern;
 
 public class InputHandler {
 
-    private final static Pattern validMove = Pattern.compile("([a-zA-Z][0-9])([-])([a-zA-Z][0-9])", Pattern.CASE_INSENSITIVE);
+    private final static Pattern validMove = Pattern.compile("([a-hA-H][1-8])([-])([a-hA-H][1-8])", Pattern.CASE_INSENSITIVE);
     private BoardMapper mapper;
 
     public InputHandler(){
@@ -39,6 +39,7 @@ public class InputHandler {
 
     public boolean isValid(String val){
         Matcher matcher = validMove.matcher(val);
+
         return matcher.matches();
     }
 }
