@@ -3,6 +3,8 @@ package Chess;
 import Chess.ChessPiece.PieceColor;
 import Console.BoardDisplay;
 
+import java.util.ArrayList;
+
 public class ChessGame {
 
     private ChessBoard board;
@@ -54,6 +56,24 @@ public class ChessGame {
         }
 
         return isPossibleMoveForPiece(from, to);
+    }
+
+    public Move[] allPossibleMovesForPiece(ChessPiece piece, Tuple currentLocation){
+        Move[] moves = piece.moves();
+        ArrayList<Move> possibleMoves = new ArrayList<>();
+
+        for(Move move: moves){
+            int currentX = currentLocation.X();
+            int currentY = currentLocation.Y();
+
+            int newX = currentX + move.x;
+            int newY = currentY + move.y;
+
+            Tuple newLocation = new Tuple(newX, newY);
+
+            if (isPossibleMoveForPiece(currentLocation, newLocation)) possibleMoves.add(move);
+        }
+        return possibleMoves.toArray(new Move[0]);//allocate new array automatically.
     }
 
     //TODO split in two
