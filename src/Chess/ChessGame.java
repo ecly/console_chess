@@ -2,7 +2,6 @@ package Chess;
 
 import Chess.ChessPiece.PieceColor;
 import Console.BoardDisplay;
-
 import java.util.ArrayList;
 
 public class ChessGame {
@@ -58,6 +57,30 @@ public class ChessGame {
         return isPossibleMoveForPiece(from, to);
     }
 
+    public boolean canColorTakeLocation(PieceColor takeColor, Tuple locationToTake){
+        Tuple[] locations = getAllPiecesLocationForColor(takeColor);
+        boolean canTake = false;
+        for (Tuple tuple: locations){
+            if (isValidMove(tuple, locationToTake)) {
+                canTake = true;
+                break;
+            }
+        }
+        return canTake;
+    }
+
+    public Tuple[] getAllPiecesLocationForColor(PieceColor color){
+        Tile[][] boardArray = board.getBoardArray();
+        ArrayList<Tuple> locations = new ArrayList<>();
+        for (int x = 0; x < boardArray.length; x++){
+            for (int y = 0; y < boardArray[x].length; y++){
+               if(!boardArray[x][y].isEmpty() && boardArray[x][y].getPiece().color() == color)
+                   locations.add(new Tuple(x,y));
+            }
+        }
+        return locations.toArray(new Tuple[0]);//allocate new array automatically.
+    }
+
     public Move[] allPossibleMovesForPiece(ChessPiece piece, Tuple currentLocation){
         Move[] moves = piece.moves();
         ArrayList<Move> possibleMoves = new ArrayList<>();
@@ -78,8 +101,8 @@ public class ChessGame {
 
     //TODO split in two
     private boolean isPossibleMoveForPiece(Tuple from, Tuple to){
-        Move[] validMoves = board.getTileFromTuple(from).getPiece().moves();
         ChessPiece fromPiece = board.getTileFromTuple(from).getPiece();
+        Move[] validMoves = fromPiece.moves();
         boolean repeatableMoves = fromPiece.repeatableMoves();
         int xMove = from.X() - to.X();
         int yMove = from.Y() - to.Y();
@@ -102,7 +125,8 @@ public class ChessGame {
                         validMove = fromPiece.color() != toPiece.color();//if different color, valid move
                         break;
                     //handling first move only for pawns
-                    } else if (move.firstMoveOnly && (fromPiece.color() == PieceColor.White && from.Y() != 6 || fromPiece.color() == PieceColor.Black && from.Y() != 1)) {
+                    } else if (move.firstMoveOnly && (fromPiece.color() == PieceColor.White && from.Y() != 6
+                               || fromPiece.color() == PieceColor.Black && from.Y() != 1)) {
                         break;
                     } else {
                         validMove = true;
