@@ -58,7 +58,7 @@ public class ChessGame {
     }
 
     public boolean canColorTakeLocation(PieceColor takeColor, Tuple locationToTake){
-        Tuple[] locations = getAllPiecesLocationForColor(takeColor);
+        Tuple[] locations = board.getAllPiecesLocationForColor(takeColor);
         boolean canTake = false;
         for (Tuple tuple: locations){
             if (isValidMove(tuple, locationToTake)) {
@@ -67,18 +67,6 @@ public class ChessGame {
             }
         }
         return canTake;
-    }
-
-    public Tuple[] getAllPiecesLocationForColor(PieceColor color){
-        Tile[][] boardArray = board.getBoardArray();
-        ArrayList<Tuple> locations = new ArrayList<>();
-        for (int x = 0; x < boardArray.length; x++){
-            for (int y = 0; y < boardArray[x].length; y++){
-               if(!boardArray[x][y].isEmpty() && boardArray[x][y].getPiece().color() == color)
-                   locations.add(new Tuple(x,y));
-            }
-        }
-        return locations.toArray(new Tuple[0]);//allocate new array automatically.
     }
 
     public Move[] allPossibleMovesForPiece(ChessPiece piece, Tuple currentLocation){

@@ -2,6 +2,8 @@ package Chess;
 
 import Chess.Pieces.*;
 
+import java.util.ArrayList;
+
 public class ChessBoard {
     private Tile[][] board;
 
@@ -22,6 +24,33 @@ public class ChessBoard {
                 else board[i][j] = new Tile(Tile.TileColor.White);
             }
         }
+    }
+
+    //Will break on boards with no Kings of 'color'. Should never happen.
+    public Tuple getKingLocation(ChessPiece.PieceColor color){
+        Tuple location = new Tuple(-1,-1);
+        for (int x = 0; x < board.length; x++){
+            for (int y = 0; y < board[x].length; y++){
+                if (!board[x][y].isEmpty()) {
+                    ChessPiece piece = board[x][y].getPiece();
+                    if (piece.color() == color && piece instanceof King){
+                       location = new Tuple(x, y);
+                    }
+                }
+            }
+        }
+        return location;
+    }
+
+    public Tuple[] getAllPiecesLocationForColor(ChessPiece.PieceColor color){
+        ArrayList<Tuple> locations = new ArrayList<>();
+        for (int x = 0; x < board.length; x++){
+            for (int y = 0; y < board[x].length; y++){
+               if(!board[x][y].isEmpty() && board[x][y].getPiece().color() == color)
+                   locations.add(new Tuple(x,y));
+            }
+        }
+        return locations.toArray(new Tuple[0]);//allocate new array automatically.
     }
 
     public Tile getTileFromTuple(Tuple tuple){
