@@ -34,6 +34,42 @@ public class ChessGame {
             System.out.println("Invalid move!");
     }
 
+    public boolean isColorCheckMate(PieceColor color){
+        Tuple kingLocation = board.getKingLocation(color);
+        ChessPiece king = board.getTileFromTuple(kingLocation).getPiece();
+        Move[] possibleMoves = allPossibleMovesForPiece(king, kingLocation);
+        boolean checkMate = true;
+        for (Move move : possibleMoves){
+            int newX = kingLocation.X() + move.x;
+            int newY = kingLocation.Y() + move.y;
+            Tuple newLocation = new Tuple(newX, newY);
+
+            if (!isLocationCheckForColor(newLocation, color)){
+                checkMate = false;
+                break;
+            }
+        }
+        return checkMate;
+    }
+
+    public boolean isKingCheck(PieceColor kingColor){
+        Tuple kingLocation = board.getKingLocation(kingColor);
+        return isLocationCheckForColor(kingLocation, kingColor);
+    }
+
+    public boolean isLocationCheckForColor(Tuple location, PieceColor color){
+        PieceColor opponentColor = (color == PieceColor.Black) ? PieceColor.White : PieceColor.Black;
+        Tuple[] piecesLocation = board.getAllPiecesLocationForColor(opponentColor);
+        boolean isCheck = false;
+        for(Tuple fromTuple: piecesLocation){
+            if(isValidMove(fromTuple, location)){
+                isCheck = true;
+                break;
+            }
+        }
+        return isCheck;
+    }
+
     private void endTurn(){
         if (currentPlayer == PieceColor.White) currentPlayer = PieceColor.Black;
         else currentPlayer = PieceColor.White;
