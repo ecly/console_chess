@@ -23,7 +23,7 @@ public class InputHandler {
 
     public Tuple getFrom(String val){
         Matcher matcher = validMove.matcher(val);
-        matcher.find();
+        matcher.matches();
         String coords = matcher.group(1);
 
         return parse(coords);
@@ -31,7 +31,7 @@ public class InputHandler {
 
     public Tuple getTo(String val){
         Matcher matcher = validMove.matcher(val);
-        matcher.find();
+        matcher.matches();
         String coords =  matcher.group(3);
 
         return parse(coords);

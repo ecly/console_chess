@@ -23,6 +23,8 @@ public class Program {
 
                 if (game.isValidMove(from, to))
                     game.playMove(from, to);
+                else
+                    System.out.println("Illegal move!");
             }
         }
         System.out.println("Game has finished. Thanks for playing.");

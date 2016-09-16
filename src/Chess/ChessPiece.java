@@ -34,4 +34,8 @@ public abstract class ChessPiece {
 
     public boolean repeatableMoves(){ return repeatableMoves; }
 
+    public static PieceColor opponent(PieceColor color) {
+        return (color == PieceColor.Black) ? PieceColor.White : PieceColor.Black;
+    }
+
 }

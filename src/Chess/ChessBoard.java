@@ -34,7 +34,7 @@ public class ChessBoard {
                 if (!board[x][y].isEmpty()) {
                     ChessPiece piece = board[x][y].getPiece();
                     if (piece.color() == color && piece instanceof King){
-                       location = new Tuple(x, y);
+                       location = new Tuple(y, x);
                     }
                 }
             }

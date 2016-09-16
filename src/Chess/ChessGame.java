@@ -44,6 +44,8 @@ public class ChessGame {
             int newY = kingLocation.Y() + move.y;
             Tuple newLocation = new Tuple(newX, newY);
 
+            //TODO check if king can move here (eg. is own piece taking spot)
+
             if (!isLocationCheckForColor(newLocation, color)){
                 checkMate = false;
                 break;
@@ -57,8 +59,8 @@ public class ChessGame {
         return isLocationCheckForColor(kingLocation, kingColor);
     }
 
-    public boolean isLocationCheckForColor(Tuple location, PieceColor color){
-        PieceColor opponentColor = (color == PieceColor.Black) ? PieceColor.White : PieceColor.Black;
+    private boolean isLocationCheckForColor(Tuple location, PieceColor color){
+        PieceColor opponentColor = ChessPiece.opponent(color);
         Tuple[] piecesLocation = board.getAllPiecesLocationForColor(opponentColor);
         boolean isCheck = false;
         for(Tuple fromTuple: piecesLocation){
@@ -66,7 +68,7 @@ public class ChessGame {
                 isCheck = true;
                 break;
             }
-        }
+    }
         return isCheck;
     }
 
@@ -76,21 +78,34 @@ public class ChessGame {
     }
 
     public boolean isValidMove(Tuple from, Tuple to){
-        ChessPiece fromPiece = board.getTileFromTuple(from).getPiece();
-        ChessPiece toPiece = board.getTileFromTuple(to).getPiece();
+        Tile fromTile = board.getTileFromTuple(from);
+        Tile toTile = board.getTileFromTuple(to);
+        ChessPiece fromPiece = fromTile.getPiece();
+        ChessPiece toPiece = toTile.getPiece();
 
         if (fromPiece == null){
-            System.out.println("From tile is empty!");
             return false;
         } else if (fromPiece.color() != currentPlayer) {
-            System.out.println("Not your piece!");
             return false;
         } else if (toPiece != null && toPiece.color() == currentPlayer) {//null pointer if null not evaluated first
-            System.out.println("Can't take own piece!");
             return false;
-        }
+        } else if (isPossibleMoveForPiece(from, to)){
+            toTile.setPiece(fromPiece);//temporarily play the move
+            fromTile.empty();
+            if (isKingCheck(currentPlayer)){//check that moves doesn't put oneself in check
+                toTile.setPiece(toPiece);
+                fromTile.setPiece(fromPiece);//revert
+                return false;
+            }
+            //if mate, finish game
+            if (isColorCheckMate(ChessPiece.opponent(currentPlayer)))
+                isFinished = true;
 
-        return isPossibleMoveForPiece(from, to);
+            toTile.setPiece(toPiece);
+            fromTile.setPiece(fromPiece);//revert
+            return true;//conditional path for legal move
+        }
+        return false;
     }
 
     public boolean canColorTakeLocation(PieceColor takeColor, Tuple locationToTake){
@@ -105,7 +120,7 @@ public class ChessGame {
         return canTake;
     }
 
-    public Move[] allPossibleMovesForPiece(ChessPiece piece, Tuple currentLocation){
+    private Move[] allPossibleMovesForPiece(ChessPiece piece, Tuple currentLocation){
         Move[] moves = piece.moves();
         ArrayList<Move> possibleMoves = new ArrayList<>();
 
@@ -168,7 +183,6 @@ public class ChessGame {
                 }
             }
         }
-        if(!validMove) System.out.println("Illegal move for piece!");
         return validMove;
     }
 
