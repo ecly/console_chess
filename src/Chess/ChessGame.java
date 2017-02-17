@@ -1,6 +1,7 @@
 package Chess;
 
 import Chess.ChessPiece.PieceColor;
+import Chess.Pieces.Pawn;
 import Console.BoardDisplay;
 import java.util.ArrayList;
 
@@ -36,6 +37,7 @@ public class ChessGame {
 
     public boolean isColorCheckMate(PieceColor color){
         Tuple kingLocation = board.getKingLocation(color);
+
         ChessPiece king = board.getTileFromTuple(kingLocation).getPiece();
         Move[] possibleMoves = allPossibleMovesForPiece(king, kingLocation);
         boolean checkMate = true;
@@ -44,11 +46,14 @@ public class ChessGame {
             int newY = kingLocation.Y() + move.y;
             Tuple newLocation = new Tuple(newX, newY);
 
-            //TODO check if king can move here (eg. is own piece taking spot)
+            //if king can move to an empty tile or tile with opponent's piece in it, we're not check
+            Tile tile = board.getTileFromTuple(newLocation);
+            if (tile.isEmpty() || tile.getPiece().color() != color) {
+                return false;
+            }
 
             if (!isLocationCheckForColor(newLocation, color)){
-                checkMate = false;
-                break;
+                return false;
             }
         }
         return checkMate;
@@ -143,12 +148,14 @@ public class ChessGame {
         ChessPiece fromPiece = board.getTileFromTuple(from).getPiece();
         Move[] validMoves = fromPiece.moves();
         boolean repeatableMoves = fromPiece.repeatableMoves();
-        int xMove = from.X() - to.X();
-        int yMove = from.Y() - to.Y();
 
-        //Reverse values for black, such that lowering y-values are treated as moving forward
+        //due to the orientation of the board
+        int xMove = to.X() - from.X();
+        int yMove = to.Y() - from.Y();
+
+        //Reverse values for white, such that lowering y-values are treated as moving forward
         //this is only relevant in the case of pawns, but added for abstract movement assignment for pieces.
-        if (currentPlayer == PieceColor.Black) {
+        if (currentPlayer == PieceColor.White && fromPiece instanceof Pawn) {
             yMove = -yMove;
         }
 
@@ -168,17 +175,27 @@ public class ChessGame {
                                || fromPiece.color() == PieceColor.Black && from.Y() != 1)) {
                         break;
                     } else {
-                        validMove = true;
-                        break;
+                        return true;
                     }
                 }
             }
         } else {
-            for(int i = 0; i <= 8; i++){//Max number of repetitions
+            for(int i = 1; i <= 7; i++){//Max number of repetitions
                 for(Move move : validMoves) {
-                    if (move.x * i == xMove && move.y * i == yMove) {
-                        validMove = true;
-                        break;
+                    if (move.x * i == xMove && move.y * i == yMove) {//generally check for possible move
+                        //if move is generally valid - check if path is valid up till i
+                        for (int j = 1; j <= i; j++){
+                            System.out.printf("fromX: %s, fromY: %s, move.x: %s, move.y %s, j: %s, i: %s\n", from.X(), from.Y(), move.x, move.y, j, i);
+                            Tile tile = board.getTileFromTuple(new Tuple(from.X() + move.x * j, from.Y() +move.y * j));
+
+                            //if passing through non empty tile return false
+                            if (j != i && !tile.isEmpty())
+                                return false;
+
+                            //if last move and toTile is empty or holds opponents piece, return true
+                            if (j == i && (tile.isEmpty() || tile.getPiece().color() != currentPlayer))
+                                return true;
+                        }
                     }
                 }
             }

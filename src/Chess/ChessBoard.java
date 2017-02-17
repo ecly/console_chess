@@ -31,10 +31,10 @@ public class ChessBoard {
         Tuple location = new Tuple(-1,-1);
         for (int x = 0; x < board.length; x++){
             for (int y = 0; y < board[x].length; y++){
-                if (!board[x][y].isEmpty()) {
-                    ChessPiece piece = board[x][y].getPiece();
+                if (!board[y][x].isEmpty()) {
+                    ChessPiece piece = board[y][x].getPiece();
                     if (piece.color() == color && piece instanceof King){
-                       location = new Tuple(y, x);
+                       location = new Tuple(x, y);
                     }
                 }
             }
