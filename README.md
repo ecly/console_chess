@@ -1,2 +1,2 @@
 #ConsoleChess
-A console based chess game with eventual distributed functionality.
+A console based chess game written in Java.
