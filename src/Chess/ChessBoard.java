@@ -29,8 +29,8 @@ public class ChessBoard {
     //Will break on boards with no Kings of 'color'. Should never happen.
     public Tuple getKingLocation(ChessPiece.PieceColor color){
         Tuple location = new Tuple(-1,-1);
-        for (int x = 0; x < board.length; x++){
-            for (int y = 0; y < board[x].length; y++){
+        for (int x = 0; x <= 7; x++){
+            for (int y = 0; y <= 7 ; y++){
                 if (!board[y][x].isEmpty()) {
                     ChessPiece piece = board[y][x].getPiece();
                     if (piece.color() == color && piece instanceof King){
@@ -44,9 +44,9 @@ public class ChessBoard {
 
     public Tuple[] getAllPiecesLocationForColor(ChessPiece.PieceColor color){
         ArrayList<Tuple> locations = new ArrayList<>();
-        for (int x = 0; x < board.length; x++){
-            for (int y = 0; y < board[x].length; y++){
-               if(!board[x][y].isEmpty() && board[x][y].getPiece().color() == color)
+        for (int x = 0; x <= 7; x++){
+            for (int y = 0; y <= 7; y++){
+               if(!board[y][x].isEmpty() && board[y][x].getPiece().color() == color)
                    locations.add(new Tuple(x,y));
             }
         }
@@ -54,6 +54,7 @@ public class ChessBoard {
     }
 
     public Tile getTileFromTuple(Tuple tuple){
+        System.out.printf("Y: %s, X: %s \n", tuple.Y(), tuple.X());
         return board[tuple.Y()][tuple.X()];
     }
 
