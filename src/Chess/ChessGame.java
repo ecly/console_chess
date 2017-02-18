@@ -1,14 +1,12 @@
 package Chess;
 
-import Chess.ChessPiece.PieceColor;
-import Chess.Pieces.Pawn;
-import Chess.Pieces.Queen;
+import Chess.ChessPiece.*;
 import Console.BoardDisplay;
 import java.util.ArrayList;
 
 public class ChessGame {
 
-    private ChessBoard board;
+    private final ChessBoard board;
     private boolean isFinished;
     private PieceColor currentPlayer;
 
@@ -36,7 +34,7 @@ public class ChessGame {
             System.out.println("Invalid move!");
     }
 
-    public boolean isColorCheckMate(PieceColor color){
+    private boolean isColorCheckMate(PieceColor color){
         System.out.println("checking for mate");
         if(!isKingCheck(color)) return false;//if not check, then we're not mate
         System.out.println("appears to be check");
@@ -63,7 +61,7 @@ public class ChessGame {
         return true;
     }
 
-    public boolean isKingCheck(PieceColor kingColor){
+    private boolean isKingCheck(PieceColor kingColor){
         Tuple kingLocation = board.getKingLocation(kingColor);
         return isLocationCheckForColor(kingLocation, kingColor);
     }
@@ -74,7 +72,7 @@ public class ChessGame {
         Tuple[] piecesLocation = board.getAllPiecesLocationForColor(opponentColor);
 
         for(Tuple fromTuple: piecesLocation) {
-            if(board.getTileFromTuple(fromTuple).getPiece() instanceof Queen)
+            if(board.getTileFromTuple(fromTuple).getPiece().pieceType() == PieceType.Queen)
                 System.out.printf("checking (%s, %s) to (%s, %s)\n", fromTuple.X(), fromTuple.Y(), location.X(), location.Y());
 
             if (isValidMove(fromTuple, location))
@@ -161,7 +159,6 @@ public class ChessGame {
                 if (move.x * i == xMove && move.y * i == yMove) {//generally check for possible move
                     //if move is generally valid - check if path is valid up till i
                     for (int j = 1; j <= i; j++){
-                        //System.out.printf("fromX: %s, fromY: %s, move.x: %s, move.y %s, j: %s, i: %s\n", from.X(), from.Y(), move.x, move.y, j, i);
                         Tile tile = board.getTileFromTuple(new Tuple(from.X() + move.x * j, from.Y() +move.y * j));
 
                         //if passing through non empty tile return false
@@ -188,7 +185,7 @@ public class ChessGame {
 
         //Reverse values for white, such that lowering y-values are treated as moving forward
         //this is only relevant in the case of pawns, but added for abstract movement assignment for pieces.
-        if (currentPlayer == PieceColor.White && fromPiece instanceof Pawn)
+        if (currentPlayer == PieceColor.White && fromPiece.pieceType() == PieceType.Pawn)
             yMove = -yMove;
 
         for (Move move : validMoves) {

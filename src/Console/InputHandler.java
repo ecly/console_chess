@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 public class InputHandler {
 
     private final static Pattern validMove = Pattern.compile("([a-hA-H][1-8])([-])([a-hA-H][1-8])", Pattern.CASE_INSENSITIVE);
-    private BoardMapper mapper;
+    private final BoardMapper mapper;
 
     public InputHandler(){
         mapper = new BoardMapper();

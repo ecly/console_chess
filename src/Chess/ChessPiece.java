@@ -2,7 +2,7 @@ package Chess;
 
 public abstract class ChessPiece {
     private PieceType type;
-    private PieceColor color;
+    private final PieceColor color;
     private Move[] moves;
     private String name;
     private char charValue;
@@ -33,6 +33,8 @@ public abstract class ChessPiece {
     public char charValue(){ return charValue; }
 
     public boolean repeatableMoves(){ return repeatableMoves; }
+
+    public PieceType pieceType() {return type; }
 
     public static PieceColor opponent(PieceColor color) {
         return (color == PieceColor.Black) ? PieceColor.White : PieceColor.Black;

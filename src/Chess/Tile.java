@@ -4,7 +4,7 @@ package Chess;
 public class Tile {
 
     private ChessPiece piece;
-    private TileColor color;
+    private final TileColor color;
 
     public enum TileColor{
         White, Black

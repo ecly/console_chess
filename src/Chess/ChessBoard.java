@@ -5,7 +5,7 @@ import Chess.Pieces.*;
 import java.util.ArrayList;
 
 public class ChessBoard {
-    private Tile[][] board;
+    private final Tile[][] board;
 
     public ChessBoard(){
         board = new Tile[8][8];
@@ -54,7 +54,6 @@ public class ChessBoard {
     }
 
     public Tile getTileFromTuple(Tuple tuple){
-        System.out.printf("Y: %s, X: %s \n", tuple.Y(), tuple.X());
         return board[tuple.Y()][tuple.X()];
     }
 

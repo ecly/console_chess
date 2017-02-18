@@ -1,7 +1,7 @@
 #ConsoleChess
 A console based chess game written in Java.
 
-**Current known shotcomings**  
+**Current known shortcomings**  
 Castling  
 En passant  
-Check for mate only semi-functional  
+Check for mate: temp move results in invalid king location 
