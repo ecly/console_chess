@@ -19,8 +19,11 @@ public class ChessGame {
         BoardDisplay.printBoard(board);
     }
 
-    public void playMove(Tuple from, Tuple to){
-        if(isValidMove(from, to)) {
+    /**
+     * @return returns true if move was played, false if move was illegal
+     */
+    public boolean playMove(Tuple from, Tuple to){
+        if(isValidMove(from, to, false)) {
             Tile fromTile = board.getBoardArray()[from.Y()][from.X()];
             ChessPiece pieceToMove = fromTile.getPiece();
 
@@ -30,8 +33,12 @@ public class ChessGame {
             fromTile.empty();
             endTurn();
             BoardDisplay.printBoard(board);
-        } else
+            return true;
+        } else {
             System.out.println("Invalid move!");
+            return false;
+        }
+
     }
 
     private boolean isColorCheckMate(PieceColor color){
@@ -75,7 +82,7 @@ public class ChessGame {
             if(board.getTileFromTuple(fromTuple).getPiece().pieceType() == PieceType.Queen)
                 System.out.printf("checking (%s, %s) to (%s, %s)\n", fromTuple.X(), fromTuple.Y(), location.X(), location.Y());
 
-            if (isValidMove(fromTuple, location))
+            if (isValidMove(fromTuple, location, true))
                 return true;
         }
 
@@ -87,7 +94,11 @@ public class ChessGame {
         else currentPlayer = PieceColor.White;
     }
 
-    public boolean isValidMove(Tuple from, Tuple to){
+    /**
+     * @param hypothetical if the move is hypotheical, we disregard if it sets the from player check
+     * @return a boolean indicating whether the move is valid or not
+     */
+    public boolean isValidMove(Tuple from, Tuple to, boolean hypothetical){
         Tile fromTile = board.getTileFromTuple(from);
         Tile toTile = board.getTileFromTuple(to);
         ChessPiece fromPiece = fromTile.getPiece();
@@ -100,6 +111,8 @@ public class ChessGame {
         } else if (toPiece != null && toPiece.color() == currentPlayer) {//null pointer if null not evaluated first
             return false;
         } else if (isValidMoveForPiece(from, to)){
+            if(hypothetical)return true;//if hypothetical and valid, return true
+
             toTile.setPiece(fromPiece);//temporarily play the move
             fromTile.empty();
             if (isKingCheck(currentPlayer)){//check that move doesn't put oneself in check

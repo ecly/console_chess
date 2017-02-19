@@ -21,9 +21,8 @@ public class Program {
                 Tuple from = handler.getFrom(input);
                 Tuple to = handler.getTo(input);
 
-                if (game.isValidMove(from, to))
-                    game.playMove(from, to);
-                else
+                boolean movePlayed = game.playMove(from, to);
+                if (!movePlayed)
                     System.out.println("Illegal move!");
             }
         }
