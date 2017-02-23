@@ -1,5 +1,5 @@
 #ConsoleChess
-A console based chess game written in Java.
+An easily extendable console based chess game written in Java.
 
 **Current known shortcomings**  
 Castling  
