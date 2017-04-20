@@ -1,0 +1,11 @@
+apply plugin: 'idea'
+//and standard one
+apply plugin: 'java'
+
+apply plugin: 'application'
+mainClassName = 'Program'
+
+jar {
+    baseName = 'ConsoleChess'
+    version = '0.1.0'
+}
