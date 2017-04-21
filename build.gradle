@@ -7,5 +7,12 @@ mainClassName = 'Program'
 
 jar {
     baseName = 'ConsoleChess'
-    version = '0.1.0'
+    manifest {
+        attributes(
+            'Main-Class': 'Program')
+    }
+}
+
+task runJar(dependsOn:jar) << {
+    javaexec {main="-jar"; args jar.archivePath}
 }
