@@ -1,3 +1,5 @@
+Input for fool's mate
+
 F2-F3
 E7-E6
 G2-G4
