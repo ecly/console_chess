@@ -1,10 +1,10 @@
-#ConsoleChess
+# ConsoleChess  
 An easily extendable console based chess game written in Java.
 
-#Build  
+**Build**  
 gradlew build
 
-#Run  
+**Run**  
 *Due to an issue with Java's Scanner being triggered by Gradle run, use attached .bat script for running the compiled -jar"*  
 Windows: run.bat  
 Other: java -jar build/libs/ConsoleChess.jar  
