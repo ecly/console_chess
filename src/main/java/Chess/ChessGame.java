@@ -41,10 +41,19 @@ public class ChessGame {
 
     }
 
+    //Function that check if any non-king piece can prevent check for given color
+    private boolean canAnyPiecePreventCheck(PieceColor color){
+        Tuple[] locations = board.getAllPiecesLocationForColor(color);
+        for(Tuple location : locations){
+            ChessPiece piece = board.getTileFromTuple(location).getPiece();
+            allPossibleMovesForPiece(piece, location);
+        }
+
+        return false;
+    }
+
     private boolean isColorCheckMate(PieceColor color){
-        System.out.println("checking for mate");
         if(!isKingCheck(color)) return false;//if not check, then we're not mate
-        System.out.println("appears to be check");
         Tuple kingLocation = board.getKingLocation(color);
 
         ChessPiece king = board.getTileFromTuple(kingLocation).getPiece();
@@ -112,8 +121,9 @@ public class ChessGame {
             return false;
         } else if (isValidMoveForPiece(from, to)){
             if(hypothetical)return true;//if hypothetical and valid, return true
-
-            toTile.setPiece(fromPiece);//temporarily play the move
+            
+            //temporarily play the move to see if it makes us check
+            toTile.setPiece(fromPiece);
             fromTile.empty();
             if (isKingCheck(currentPlayer)){//check that move doesn't put oneself in check
                 toTile.setPiece(toPiece);
@@ -125,27 +135,31 @@ public class ChessGame {
             if (isColorCheckMate(ChessPiece.opponent(currentPlayer)))
                 isFinished = true;
 
+            //revert temporary move
             toTile.setPiece(toPiece);
-            fromTile.setPiece(fromPiece);//revert
-            return true;//conditional path for legal move
+            fromTile.setPiece(fromPiece);
+
+            //conditional path for legal move
+            return true;
         }
         return false;
     }
 
+    //A utility function that gets all the possible moves for a piece, with illegal ones removed.
+    //NOTICE: Does not check for check when evaluating legality.
     private Move[] allPossibleMovesForPiece(ChessPiece piece, Tuple currentLocation){
         Move[] moves = piece.moves();
         ArrayList<Move> possibleMoves = new ArrayList<>();
 
         for(Move move: moves){
-            int currentX = currentLocation.X();
-            int currentY = currentLocation.Y();
+            if(piece.repeatableMoves()){
 
-            int newX = currentX + move.x;
-            int newY = currentY + move.y;
-
-            Tuple newLocation = new Tuple(newX, newY);
-
-            if (isValidMoveForPiece(currentLocation, newLocation)) possibleMoves.add(move);
+            } else {
+                int currentX = currentLocation.X();
+                int currentY = currentLocation.Y();
+                Tuple newLocation = new Tuple(currentX + move.x, currentY + move.y);
+                if (isValidMoveForPiece(currentLocation, newLocation)) possibleMoves.add(move);
+            }
         }
         return possibleMoves.toArray(new Move[0]);//allocate new array automatically.
     }

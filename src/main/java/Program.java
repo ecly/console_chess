@@ -28,6 +28,7 @@ public class Program {
                     System.out.println("Illegal move!");
             }
         }
+        scanner.close();
         System.out.println("Game has finished. Thanks for playing.");
     }
 }
