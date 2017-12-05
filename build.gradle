@@ -1,6 +1,21 @@
 apply plugin: 'java'
 apply plugin: 'application'
 
+repositories { jcenter() }
+
+dependencies {
+    compile 'junit:junit:4.12'         
+    testCompile 'junit:junit:4.12'         
+}
+
+sourceSets {
+    main {
+        java { srcDir 'src' }
+    }
+    test {
+        java { srcDir 'src' }
+    }
+}
 jar {
     baseName = 'ConsoleChess'
     manifest {
@@ -9,12 +24,10 @@ jar {
     }
 }
 
+
 run {
     standardInput = System.in
 }
 
-dependencies {
-    testCompile 'junit:junit:4.12'         
-}
 
 mainClassName = 'Program'
