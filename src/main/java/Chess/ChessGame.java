@@ -54,27 +54,25 @@ public class ChessGame {
                 int newX = location.X() + move.x;
                 int newY = location.Y() + move.y;
 
-                if (newX > 0 && newX < 7 && newY > 0 && newY < 7) {
-                    Tuple newLocation = new Tuple(newX, newY);
+                Tuple newLocation = new Tuple(newX, newY);
 
-                    Tile toTile = board.getTileFromTuple(newLocation);
-                    ChessPiece toPiece = toTile.getPiece();
+                Tile toTile = board.getTileFromTuple(newLocation);
+                ChessPiece toPiece = toTile.getPiece();
 
-                    //temporarily play the move to see if it makes us check
-                    toTile.setPiece(piece);
-                    fromTile.empty();
+                //temporarily play the move to see if it makes us check
+                toTile.setPiece(piece);
+                fromTile.empty();
 
-                    //if we're no longer check
-                    if (!isKingCheck(color))
-                        canPreventCheck = true;
+                //if we're no longer check
+                if (!isKingCheck(color))
+                    canPreventCheck = true;
 
-                    //revert temporary move
-                    toTile.setPiece(toPiece);
-                    fromTile.setPiece(piece);
-                    if(canPreventCheck){ // early out
-                        System.out.printf("Prevented with from:" + fromTile + ", to: " + toTile);
-                        return canPreventCheck;
-                    }
+                //revert temporary move
+                toTile.setPiece(toPiece);
+                fromTile.setPiece(piece);
+                if(canPreventCheck){ // early out
+                    System.out.printf("Prevented with from:" + fromTile + ", to: " + toTile);
+                    return canPreventCheck;
                 }
             }
         }
@@ -91,15 +89,13 @@ public class ChessGame {
         for (Move move : possibleMoves){
             int newX = kingLocation.X() + move.x;
             int newY = kingLocation.Y() + move.y;
-            if (newX > 0 && newX < 7 && newY > 0 && newY < 7) {
-                Tuple newLocation = new Tuple(newX, newY);
+            Tuple newLocation = new Tuple(newX, newY);
 
-                //if the new location isn't check, and we can move there, return false
-                if (!isLocationCheckForColor(newLocation, color)) {
-                    Tile tile = board.getTileFromTuple(newLocation);
-                    if (tile.isEmpty() || tile.getPiece().color() != color) {
-                        return false;
-                    }
+            //if the new location isn't check, and we can move there, return false
+            if (!isLocationCheckForColor(newLocation, color)) {
+                Tile tile = board.getTileFromTuple(newLocation);
+                if (tile.isEmpty() || tile.getPiece().color() != color) {
+                    return false;
                 }
             }
         }
