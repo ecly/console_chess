@@ -1,9 +1,5 @@
-apply plugin: 'idea'
-//and standard one
 apply plugin: 'java'
-
 apply plugin: 'application'
-mainClassName = 'Program'
 
 jar {
     baseName = 'ConsoleChess'
@@ -13,6 +9,12 @@ jar {
     }
 }
 
-task runJar(dependsOn:jar) << {
-    javaexec {main="-jar"; args jar.archivePath}
+run {
+    standardInput = System.in
 }
+
+dependencies {
+    testCompile 'junit:junit:4.12'         
+}
+
+mainClassName = 'Program'
