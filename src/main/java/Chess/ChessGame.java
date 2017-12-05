@@ -38,18 +38,47 @@ public class ChessGame {
             System.out.println("Invalid move!");
             return false;
         }
-
     }
 
     //Function that check if any non-king piece can prevent check for given color
     private boolean canAnyPiecePreventCheck(PieceColor color){
+        boolean canPreventCheck = false;
         Tuple[] locations = board.getAllPiecesLocationForColor(color);
         for(Tuple location : locations){
-            ChessPiece piece = board.getTileFromTuple(location).getPiece();
-            allPossibleMovesForPiece(piece, location);
-        }
+            Tile fromTile = board.getTileFromTuple(location);
+            ChessPiece piece = fromTile.getPiece();
+            if(piece.pieceType() == PieceType.King) continue;
+            Move[] possibleMoves = allPossibleMovesForPiece(piece, location);
 
-        return false;
+            for(Move move : possibleMoves){
+                int newX = location.X() + move.x;
+                int newY = location.Y() + move.y;
+
+                if (newX > 0 && newX < 7 && newY > 0 && newY < 7) {
+                    Tuple newLocation = new Tuple(newX, newY);
+
+                    Tile toTile = board.getTileFromTuple(newLocation);
+                    ChessPiece toPiece = toTile.getPiece();
+
+                    //temporarily play the move to see if it makes us check
+                    toTile.setPiece(piece);
+                    fromTile.empty();
+
+                    //if we're no longer check
+                    if (!isKingCheck(color))
+                        canPreventCheck = true;
+
+                    //revert temporary move
+                    toTile.setPiece(toPiece);
+                    fromTile.setPiece(piece);
+                    if(canPreventCheck){ // early out
+                        System.out.printf("Prevented with from:" + fromTile + ", to: " + toTile);
+                        return canPreventCheck;
+                    }
+                }
+            }
+        }
+        return canPreventCheck;
     }
 
     private boolean isColorCheckMate(PieceColor color){
@@ -74,7 +103,9 @@ public class ChessGame {
                 }
             }
         }
-        return true;
+
+        // check if other pieces can circumvent check;
+        return canAnyPiecePreventCheck(color);
     }
 
     private boolean isKingCheck(PieceColor kingColor){
@@ -147,6 +178,8 @@ public class ChessGame {
 
     //A utility function that gets all the possible moves for a piece, with illegal ones removed.
     //NOTICE: Does not check for check when evaluating legality.
+    //        This means it mostly check if it is a legal move for the piece in terms
+    //        of ensuring its not taking one of its own.
     private Move[] allPossibleMovesForPiece(ChessPiece piece, Tuple currentLocation){
         Move[] moves = piece.moves();
         ArrayList<Move> possibleMoves = new ArrayList<>();
@@ -157,7 +190,10 @@ public class ChessGame {
             } else {
                 int currentX = currentLocation.X();
                 int currentY = currentLocation.Y();
-                Tuple newLocation = new Tuple(currentX + move.x, currentY + move.y);
+                int newX = currentX + move.x;
+                int newY = currentY + move.y;
+                if (newX < 0 || newX > 7 || newY < 0 || newY > 7) continue;
+                Tuple newLocation = new Tuple(newX,newY);
                 if (isValidMoveForPiece(currentLocation, newLocation)) possibleMoves.add(move);
             }
         }
@@ -187,7 +223,6 @@ public class ChessGame {
                     //if move is generally valid - check if path is valid up till i
                     for (int j = 1; j <= i; j++){
                         Tile tile = board.getTileFromTuple(new Tuple(from.X() + move.x * j, from.Y() +move.y * j));
-
                         //if passing through non empty tile return false
                         if (j != i && !tile.isEmpty())
                             return false;
@@ -201,7 +236,6 @@ public class ChessGame {
         }
         return false;
     }
-
 
     private boolean validMoveForPieceNonRepeatable(Tuple from, Tuple to){
         ChessPiece fromPiece = board.getTileFromTuple(from).getPiece();
@@ -235,7 +269,6 @@ public class ChessGame {
         }
         return false;
     }
-
 
     public boolean isFinished(){
         return isFinished;
