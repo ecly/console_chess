@@ -35,7 +35,6 @@ public class ChessGame {
             BoardDisplay.printBoard(board);
             return true;
         } else {
-            System.out.println("Invalid move!");
             return false;
         }
     }
@@ -148,7 +147,7 @@ public class ChessGame {
             return false;
         } else if (isValidMoveForPiece(from, to)){
             if(hypothetical)return true;//if hypothetical and valid, return true
-            
+
             //temporarily play the move to see if it makes us check
             toTile.setPiece(fromPiece);
             fromTile.empty();
@@ -239,11 +238,6 @@ public class ChessGame {
 
         int xMove = to.X() - from.X();
         int yMove = to.Y() - from.Y();
-
-        //Reverse values for white, such that lowering y-values are treated as moving forward
-        //this is only relevant in the case of pawns, but added for abstract movement assignment for pieces.
-        if (currentPlayer == PieceColor.White && fromPiece.pieceType() == PieceType.Pawn)
-            yMove = -yMove;
 
         for (Move move : validMoves) {
             if (move.x == xMove && move.y == yMove) {
