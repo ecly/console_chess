@@ -1,7 +1,6 @@
 package Chess;
 
 import Chess.ChessPiece.*;
-import Console.BoardDisplay;
 import java.util.ArrayList;
 
 public class ChessGame {
@@ -14,9 +13,6 @@ public class ChessGame {
         board = new ChessBoard();
         currentPlayer = PieceColor.White;
         isFinished = false;
-
-        BoardDisplay.clearConsole();
-        BoardDisplay.printBoard(board);
     }
 
     /**
@@ -32,7 +28,6 @@ public class ChessGame {
 
             fromTile.empty();
             endTurn();
-            BoardDisplay.printBoard(board);
             return true;
         } else {
             return false;
@@ -258,6 +253,10 @@ public class ChessGame {
             }
         }
         return false;
+    }
+
+    public ChessBoard getBoard(){
+        return board;
     }
 
     public boolean isFinished(){
