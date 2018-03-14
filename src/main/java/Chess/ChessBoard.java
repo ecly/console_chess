@@ -33,7 +33,7 @@ public class ChessBoard {
             for (int y = 0; y <= 7 ; y++){
                 if (!board[y][x].isEmpty()) {
                     ChessPiece piece = board[y][x].getPiece();
-                    if (piece.color() == color && piece instanceof King){
+                    if (piece.getColor() == color && piece instanceof King){
                        location = new Tuple(x, y);
                     }
                 }
@@ -46,7 +46,7 @@ public class ChessBoard {
         ArrayList<Tuple> locations = new ArrayList<>();
         for (int x = 0; x <= 7; x++){
             for (int y = 0; y <= 7; y++){
-               if(!board[y][x].isEmpty() && board[y][x].getPiece().color() == color)
+               if(!board[y][x].isEmpty() && board[y][x].getPiece().getColor() == color)
                    locations.add(new Tuple(x,y));
             }
         }
