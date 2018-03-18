@@ -23,13 +23,11 @@ public class ChessGameTest {
             if (!movePlayed) fail("Should be legal move");
         }
         Console.BoardDisplay.printBoard(game.getBoard());
-        System.out.println("Do I get here?");
         assert(game.isFinished());
     }
 
     @Test
     public void testFirstMovePawn() {
-        System.out.println("Do I get here?");
         InputHandler handler = new InputHandler();
         Tuple location = handler.parse("A2");
         ChessGame game = new ChessGame();

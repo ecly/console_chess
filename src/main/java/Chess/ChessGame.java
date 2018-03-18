@@ -48,6 +48,12 @@ public class ChessGame {
         return isFinished;
     }
 
+    private void endTurn(){
+        currentPlayer = (currentPlayer == PieceColor.White)
+            ? PieceColor.Black
+            : PieceColor.White;
+    }
+
     // Function that checks if any piece can prevent check for the given color
     // This includes whether the King can move out of check himself.
     private boolean isCheckPreventable(PieceColor color){
@@ -68,8 +74,9 @@ public class ChessGame {
                 fromTile.empty();
 
                 //if we're no longer check
-                if (!isKingCheck(color))
+                if (!isKingCheck(color)){
                     canPreventCheck = true;
+                }
 
                 //revert temporary move
                 toTile.setPiece(toPiece);
@@ -85,7 +92,7 @@ public class ChessGame {
 
     private boolean isColorCheckMate(PieceColor color){
         if(!isKingCheck(color)) return false;//if not check, then we're not mate
-        return isCheckPreventable(color);
+        return !isCheckPreventable(color);
     }
 
     private boolean isKingCheck(PieceColor kingColor){
@@ -98,20 +105,10 @@ public class ChessGame {
         Tuple[] piecesLocation = board.getAllPiecesLocationForColor(opponentColor);
 
         for(Tuple fromTuple: piecesLocation) {
-            if(board.getTileFromTuple(fromTuple).getPiece().getPieceType() == PieceType.Queen)
-                System.out.printf("checking (%s, %s) to (%s, %s)\n", fromTuple.X(), fromTuple.Y(), location.X(), location.Y());
-
             if (isValidMove(fromTuple, location, true))
                 return true;
         }
-
         return false;
-    }
-
-    private void endTurn(){
-        currentPlayer = (currentPlayer == PieceColor.White)
-            ? PieceColor.Black
-            : PieceColor.White;
     }
 
     /**
@@ -134,7 +131,7 @@ public class ChessGame {
             return false;
         } else if (isValidMoveForPiece(from, to)){
             //if hypothetical and valid, return true
-            if(hypothetical)return true;
+            if(hypothetical) return true;
 
             //temporarily play the move to see if it makes us check
             toTile.setPiece(fromPiece);
