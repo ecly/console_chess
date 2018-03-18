@@ -4,8 +4,8 @@ apply plugin: 'application'
 repositories { jcenter() }
 
 dependencies {
-    compile 'junit:junit:4.12'         
-    testCompile 'junit:junit:4.12'         
+    compile 'junit:junit:4.12'
+    testCompile 'junit:junit:4.12'
 }
 
 sourceSets {
@@ -24,6 +24,9 @@ jar {
     }
 }
 
+test {
+    testLogging.showStandardStreams = true
+}
 
 run {
     standardInput = System.in

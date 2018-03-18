@@ -57,14 +57,9 @@ public class ChessGame {
         for(Tuple location : locations){
             Tile fromTile = board.getTileFromTuple(location);
             ChessPiece piece = fromTile.getPiece();
-            Move[] possibleMoves = validMovesForPiece(piece, location);
+            Tuple[] possibleMoves = validMovesForPiece(piece, location);
 
-            for(Move move : possibleMoves){
-                int newX = location.X() + move.x;
-                int newY = location.Y() + move.y;
-
-                Tuple newLocation = new Tuple(newX, newY);
-
+            for(Tuple newLocation : possibleMoves){
                 Tile toTile = board.getTileFromTuple(newLocation);
                 ChessPiece toPiece = toTile.getPiece();
 
@@ -90,12 +85,6 @@ public class ChessGame {
 
     private boolean isColorCheckMate(PieceColor color){
         if(!isKingCheck(color)) return false;//if not check, then we're not mate
-        Tuple kingLocation = board.getKingLocation(color);
-
-        ChessPiece king = board.getTileFromTuple(kingLocation).getPiece();
-        Move[] possibleMoves = validMovesForPiece(king, kingLocation);
-
-        // check if other pieces can circumvent check;
         return isCheckPreventable(color);
     }
 
@@ -120,8 +109,9 @@ public class ChessGame {
     }
 
     private void endTurn(){
-        if (currentPlayer == PieceColor.White) currentPlayer = PieceColor.Black;
-        else currentPlayer = PieceColor.White;
+        currentPlayer = (currentPlayer == PieceColor.White)
+            ? PieceColor.Black
+            : PieceColor.White;
     }
 
     /**
@@ -172,24 +162,43 @@ public class ChessGame {
     // NOTICE: Does not check for counter-check when evaluating legality.
     //         This means it mostly checks if it is a legal move for the piece in terms
     //         of ensuring its not taking one of its own, and within its 'possibleMoves'.
-    private Move[] validMovesForPiece(ChessPiece piece, Tuple currentLocation){
+    // Returns the Tuples representing the Tiles to which the given piece
+    // can legally move.
+    private Tuple[] validMovesForPiece(ChessPiece piece, Tuple currentLocation){
             return piece.hasRepeatableMoves()
                 ? validMovesRepeatable(piece, currentLocation)
                 : validMovesNonRepeatable(piece, currentLocation);
     }
 
-    private Move[] validMovesRepeatable(ChessPiece piece, Tuple currentLocation) {
+    // Returns the Tuples representing the Tiles to which the given piece
+    // can legally move.
+    private Tuple[] validMovesRepeatable(ChessPiece piece, Tuple currentLocation) {
         Move[] moves = piece.getMoves();
-        ArrayList<Move> possibleMoves = new ArrayList<>();
+        ArrayList<Tuple> possibleMoves = new ArrayList<>();
 
         for(Move move: moves){
+            for(int i = 1; i < 7; i++){
+                int newX = currentLocation.X() + move.x * i;
+                int newY = currentLocation.Y() + move.y * i;
+                if (newX < 0 || newX > 7 || newY < 0 || newY > 7) break;
+
+                Tuple toLocation = new Tuple(newX, newY);
+                Tile tile = board.getTileFromTuple(toLocation);
+                if (tile.isEmpty()) {
+                    possibleMoves.add(toLocation);
+                } else {
+                    if (tile.getPiece().getColor() != piece.getColor())
+                        possibleMoves.add(toLocation);
+                    break;
+                }
+            }
         }
-        return possibleMoves.toArray(new Move[0]);
+        return possibleMoves.toArray(new Tuple[0]);
     }
 
-    private Move[] validMovesNonRepeatable(ChessPiece piece, Tuple currentLocation) {
+    private Tuple[] validMovesNonRepeatable(ChessPiece piece, Tuple currentLocation) {
         Move[] moves = piece.getMoves();
-        ArrayList<Move> possibleMoves = new ArrayList<>();
+        ArrayList<Tuple> possibleMoves = new ArrayList<>();
 
         for(Move move: moves){
             int currentX = currentLocation.X();
@@ -198,9 +207,9 @@ public class ChessGame {
             int newY = currentY + move.y;
             if (newX < 0 || newX > 7 || newY < 0 || newY > 7) continue;
             Tuple newLocation = new Tuple(newX,newY);
-            if (isValidMoveForPiece(currentLocation, newLocation)) possibleMoves.add(move);
+            if (isValidMoveForPiece(currentLocation, newLocation)) possibleMoves.add(newLocation);
         }
-        return possibleMoves.toArray(new Move[0]);
+        return possibleMoves.toArray(new Tuple[0]);
     }
 
     // Checks whether a given move from from one tuple to another is valid.
@@ -273,7 +282,7 @@ public class ChessGame {
     }
 
     // Determine wheter the Pawn at 'from' on 'board' has moved yet.
-    private boolean isFirstMoveForPawn(Tuple from, ChessBoard board){
+    public boolean isFirstMoveForPawn(Tuple from, ChessBoard board){
         Tile tile = board.getTileFromTuple(from);
         if (tile.isEmpty() || tile.getPiece().getPieceType() != PieceType.Pawn) {
             return false;
@@ -284,5 +293,4 @@ public class ChessGame {
                 : from.Y() == 1;
         }
     }
-
 }

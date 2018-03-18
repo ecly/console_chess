@@ -23,6 +23,27 @@ public class ChessGameTest {
             if (!movePlayed) fail("Should be legal move");
         }
         Console.BoardDisplay.printBoard(game.getBoard());
+        System.out.println("Do I get here?");
         assert(game.isFinished());
+    }
+
+    @Test
+    public void testFirstMovePawn() {
+        System.out.println("Do I get here?");
+        InputHandler handler = new InputHandler();
+        Tuple location = handler.parse("A2");
+        ChessGame game = new ChessGame();
+        assert(game.isFirstMoveForPawn(location, game.getBoard()));
+    }
+
+    @Test
+    public void testNotFirstMovePawn() {
+        InputHandler handler = new InputHandler();
+        String move = "A2-A3";
+        Tuple from = handler.getFrom(move);
+        Tuple to = handler.getTo(move);
+        ChessGame game = new ChessGame();
+        game.playMove(from, to);
+        assert(!game.isFirstMoveForPawn(to, game.getBoard()));
     }
 }
