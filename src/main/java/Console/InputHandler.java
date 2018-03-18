@@ -14,7 +14,7 @@ public class InputHandler {
         mapper = new BoardMapper();
     }
 
-    private Tuple parse(String val){
+    public Tuple parse(String val){
         int x = mapper.map(val.charAt(0));
         int y = mapper.map(Integer.parseInt(String.valueOf(val.charAt(1))));
 

@@ -1,6 +1,7 @@
 import Chess.ChessGame;
 import Chess.Tuple;
 import Console.InputHandler;
+import Console.BoardDisplay;
 
 import java.util.Scanner;
 
@@ -12,6 +13,8 @@ public class Program {
         Scanner scanner = new Scanner(System.in);
 
         ChessGame game = new ChessGame();
+        BoardDisplay.clearConsole();
+        BoardDisplay.printBoard(game.getBoard());
         while (!game.isFinished()) {
             System.out.println("Enter move (eg. A2-A3): ");
             String input = scanner.nextLine();
@@ -26,8 +29,13 @@ public class Program {
                 boolean movePlayed = game.playMove(from, to);
                 if (!movePlayed)
                     System.out.println("Illegal move!");
+                else {
+                    BoardDisplay.clearConsole();
+                    BoardDisplay.printBoard(game.getBoard());
+                }
             }
         }
+        scanner.close();
         System.out.println("Game has finished. Thanks for playing.");
     }
 }

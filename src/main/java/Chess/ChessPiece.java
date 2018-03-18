@@ -24,17 +24,17 @@ public abstract class ChessPiece {
     public enum PieceColor {
         White, Black
     }
-    public Move[] moves(){ return moves; }
+    public Move[] getMoves(){ return moves; }
 
-    public String name(){ return name; }
+    public String getName(){ return name; }
 
-    public PieceColor color(){ return color; }
+    public PieceColor getColor(){ return color; }
 
-    public char charValue(){ return charValue; }
+    public char getCharValue(){ return charValue; }
 
-    public boolean repeatableMoves(){ return repeatableMoves; }
+    public boolean hasRepeatableMoves(){ return repeatableMoves; }
 
-    public PieceType pieceType() {return type; }
+    public PieceType getPieceType() {return type; }
 
     public static PieceColor opponent(PieceColor color) {
         return (color == PieceColor.Black) ? PieceColor.White : PieceColor.Black;

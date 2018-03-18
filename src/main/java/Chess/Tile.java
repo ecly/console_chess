@@ -27,9 +27,9 @@ public class Tile {
         return this.piece;
     }
 
-    public String value(){
+    public String getValue(){
         if(piece != null){
-            return "[" + piece.charValue() + "]";
+            return "[" + piece.getCharValue() + "]";
         } else {
             return "[ ]";
         }
